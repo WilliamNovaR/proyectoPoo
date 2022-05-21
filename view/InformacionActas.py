@@ -3,12 +3,7 @@
 def listar_actas(st, criterios_controller, acta_controller):
     st.title("Informacion resumen de acta")
     # se usan los arreglos para guardar los nombres y mostrarlos luego en un selecte box
-    actas_nombres = []
-    criterios = []
-    for acta in acta_controller.actas:
-        actas_nombres.append(acta.nombre_pdf)
-    for criterio in criterios_controller.criterios:
-        criterios.append(criterio.identificador)
+    actas_nombres = acta_controller.listar_nombre()
     seleccionar_acta = st.selectbox("seleccioanr estudiante", actas_nombres)
     #imprime los datos de las actas resumidos
     for pdf in acta_controller.actas:
@@ -16,6 +11,7 @@ def listar_actas(st, criterios_controller, acta_controller):
             st.subheader("Numero de acta: " + pdf.num_acta)
             st.subheader("Fecha: " + pdf.fecha)
             st.subheader("Nombre autor: " + pdf.autor)
+            st.subheader( "Titulo" + pdf.titulo )
             st.subheader("Nota: " + pdf.calificacion_final)
             if float(pdf.calificacion_final) > 3.5:
                 st.success("Aprobado")

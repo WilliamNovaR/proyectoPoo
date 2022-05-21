@@ -1,9 +1,6 @@
 from model.EvalEstudiante import EvaluacionEstudiante
 from datetime import datetime
 
-
-
-
 #inicializa la acta
 def agregar_datos(st, controller):
     limite_semestre = 7
@@ -18,16 +15,16 @@ def agregar_datos(st, controller):
         evaluacion_obj.periodo = datetime.today().strftime('%Y') + '-' + '2: '
     #lee datos de inicializacion de acta
     evaluacion_obj.periodo = st.text_input("Periodo de evaluacion", value=evaluacion_obj.periodo)
-    evaluacion_obj.nombre_autor = st.text_input("Nombre del autor")
-    evaluacion_obj.tipo_trabajo = st.radio("Tipo de trabajo", ('Aplicado', 'Investigacion'))
-    evaluacion_obj.nombre_trabajo = st.text_input("Nombre del trabajo")
-    evaluacion_obj.nombre_director = st.text_input("Nombre del director")
-    coodirector = st.radio("El trabajo tiene codirector?", ('Si', 'No'))
-    if coodirector == 'Si':#pregunta si tiene codirector para preguntar el nombre o no
-        evaluacion_obj.nombre_codirector = st.text_input("Nombre del codirector")
-    evaluacion_obj.enfasis = st.text_input("Enfasis en:")
-    evaluacion_obj.nombre_jurado1 = st.text_input("Nombre del jurado1")
-    evaluacion_obj.nombre_jurado2 = st.text_input("Nombre del jurado2")
+    evaluacion_obj.nombre_autor = st.text_input("Nombre del autor", value =evaluacion_obj.nombre_autor )
+    evaluacion_obj.tipo_trabajo  = st.selectbox("Tipo de trabajo", ('Aplicado', 'Investigacion'))
+    evaluacion_obj.nombre_trabajo = st.text_input("Nombre del trabajo", value=evaluacion_obj.nombre_trabajo )
+    evaluacion_obj.nombre_director = st.text_input("Nombre del director",value= evaluacion_obj.nombre_director )
+    codirector = st.selectbox( "El trabajo tiene coodirector?", ('Si', 'No') )
+    if codirector == 'Si':
+        evaluacion_obj.nombre_codirector = st.text_input( "Nombre codirector: " )
+    evaluacion_obj.enfasis = st.text_input("Enfasis en:", value= evaluacion_obj.enfasis)
+    evaluacion_obj.nombre_jurado1 = st.text_input("Nombre del jurado1", value=evaluacion_obj.nombre_jurado1 )
+    evaluacion_obj.nombre_jurado2 = st.text_input("Nombre del jurado2", value= evaluacion_obj.nombre_jurado2 )
     #pregunta el numero del acta desde el cual se va a empezar
     if len(controller.evaluaciones):
         evaluacion_obj.inicilizar = st.number_input("Numero de acta:", value=controller.evaluaciones[
@@ -42,8 +39,9 @@ def agregar_datos(st, controller):
         for i in controller.evaluaciones:
             if evaluacion_obj.id_estudiante == i.id_estudiante:
                 st.error( "Id repetida" )
-                return 
-        controller.agregar_evaluacion(evaluacion_obj)
+                return
+        controller.evaluaciones.append( evaluacion_obj )
+        controller.cargar()
         st.success("Evaluacion agregada exitosamente")
     else:
         st.error("Faltan criterios por calificar!")
